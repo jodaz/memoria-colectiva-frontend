@@ -13,8 +13,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Collective Memory | Forensic Vault & Archive",
-  description: "A high-security digital museum and human rights archive dedicated to collective memory and historical truth.",
+  title: "Memoria Colectiva | Bóveda Forense y Archivo",
+  description: "Un museo digital de alta seguridad y archivo de derechos humanos dedicado a la memoria colectiva y la verdad histórica.",
 };
 
 export default function RootLayout({

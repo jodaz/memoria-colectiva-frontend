@@ -5,9 +5,9 @@ import { Users, BookOpen, Clock } from "lucide-react";
 
 export const StatsCounter = () => {
   const stats = [
-    { label: "Victims Documented", value: "24,850", icon: Users },
-    { label: "Artifacts Preserved", value: "112,400", icon: BookOpen },
-    { label: "History Archived", value: "45 Years", icon: Clock },
+    { label: "Víctimas Documentadas", value: "24,850", icon: Users },
+    { label: "Artefactos Preservados", value: "112,400", icon: BookOpen },
+    { label: "Años de Historia", value: "45 Años", icon: Clock },
   ];
 
   return (

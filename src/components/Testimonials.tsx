@@ -7,18 +7,18 @@ export const Testimonials = () => {
   const testimonials = [
     {
       name: "Rafael M.",
-      role: "Survivor of 1982 Movements",
-      quote: "Being able to store these digital memories in a place that feels as secure as a physical vault gives us the peace we need to continue telling our story.",
+      role: "Sobreviviente de los Movimientos de 1982",
+      quote: "Poder almacenar estos recuerdos digitales en un lugar que se siente tan seguro como una bóveda física nos da la paz que necesitamos para seguir contando nuestra historia.",
     },
     {
       name: "Elena G.",
-      role: "Human Rights Lawyer",
-      quote: "Metadata scrubbing and zero-knowledge encryption are not just features here; they are the tools of survival for those still under threat.",
+      role: "Abogada de Derechos Humanos",
+      quote: "La limpieza de metadatos y el cifrado de conocimiento cero no son solo funciones aquí; son las herramientas de supervivencia para aquellos que aún están bajo amenaza.",
     },
     {
       name: "Carlos V.",
-      role: "Grandson of a 'Missing' Person",
-      quote: "I found a photo of my grandfather here that no one in our family had seen. This archive is bringing back pieces of our soul that were stolen.",
+      role: "Nieto de una Persona Desaparecida",
+      quote: "Encontré una foto de mi abuelo aquí que nadie en nuestra familia había visto. Este archivo está recuperando pedazos de nuestra alma que fueron robados.",
     },
   ];
 
@@ -28,8 +28,8 @@ export const Testimonials = () => {
       
       <div className="container mx-auto px-6 relative z-10">
         <div className="text-center mb-16">
-          <h2 className="text-sm uppercase tracking-[0.4em] text-accent mb-4">Voices of Truth</h2>
-          <h3 className="text-4xl md:text-5xl font-bold tracking-tight">Testimonials of Memory</h3>
+          <h2 className="text-sm uppercase tracking-[0.4em] text-accent mb-4">Voces de la Verdad</h2>
+          <h3 className="text-4xl md:text-5xl font-bold tracking-tight">Testimonios de Memoria</h3>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

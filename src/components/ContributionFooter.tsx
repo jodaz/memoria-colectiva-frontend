@@ -5,16 +5,16 @@ import { FileText, Video, Mic, Image as ImageIcon, ShieldCheck, EyeOff, Lock } f
 
 export const ContributionFooter = () => {
   const types = [
-    { label: "Text", icon: FileText },
+    { label: "Texto", icon: FileText },
     { label: "Video", icon: Video },
     { label: "Audio", icon: Mic },
-    { label: "Photos", icon: ImageIcon },
+    { label: "Fotos", icon: ImageIcon },
   ];
 
   const security = [
-    { label: "Zero-Knowledge Encryption", icon: ShieldCheck },
-    { label: "Metadata Scrubbing", icon: EyeOff },
-    { label: "Anonymous Submissions", icon: Lock },
+    { label: "Cifrado de Conocimiento Cero", icon: ShieldCheck },
+    { label: "Limpieza de Metadatos", icon: EyeOff },
+    { label: "Envíos Anónimos", icon: Lock },
   ];
 
   return (
@@ -23,10 +23,10 @@ export const ContributionFooter = () => {
       
       <div className="container mx-auto px-6 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl md:text-6xl font-bold mb-6 tracking-tighter">Share Your Story</h2>
+          <h2 className="text-4xl md:text-6xl font-bold mb-6 tracking-tighter">Comparte tu Historia</h2>
           <p className="text-xl text-muted-foreground mb-12">
-            Your voice is a vital part of history. Contribute securely to our collective archive. 
-            All submissions are processed through a high-security forensic pipeline.
+            Tu voz es una parte vital de la historia. Contribuye de forma segura a nuestro archivo colectivo. 
+            Todos los envíos se procesan a través de una línea de seguridad forense de alto nivel.
           </p>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
@@ -51,11 +51,11 @@ export const ContributionFooter = () => {
           </div>
 
           <button className="px-12 py-6 bg-accent hover:bg-accent/90 text-white text-lg font-bold transition-all shadow-[0_0_30px_rgba(208,24,28,0.3)] hover:shadow-[0_0_50px_rgba(208,24,28,0.5)]">
-            Contribute Securely
+            Contribuir de Forma Segura
           </button>
           
           <p className="mt-8 text-xs text-muted-foreground max-w-md mx-auto leading-relaxed">
-            By contributing, you agree to our anonymity protocols. Your identity will never be stored or shared without explicit, multi-factor consent.
+            Al contribuir, aceptas nuestros protocolos de anonimato. Tu identidad nunca será almacenada ni compartida sin un consentimiento explícito de múltiples factores.
           </p>
         </div>
       </div>

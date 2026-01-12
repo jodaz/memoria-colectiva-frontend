@@ -18,10 +18,10 @@ export const Navbar = () => {
   }, []);
 
   const navLinks = [
-    { name: "Archive", href: "#archive" },
-    { name: "Gallery", href: "#gallery" },
-    { name: "Testimonials", href: "#testimonials" },
-    { name: "Contribute", href: "#contribute" },
+    { name: "Archivo", href: "#archive" },
+    { name: "Galería", href: "#gallery" },
+    { name: "Testimonios", href: "#testimonials" },
+    { name: "Contribuir", href: "#contribute" },
   ];
 
   return (
@@ -33,9 +33,9 @@ export const Navbar = () => {
       <div className="container mx-auto px-6 flex justify-between items-center">
         <Link href="/" className="text-xl font-bold tracking-tighter flex items-center gap-2 group">
           <div className="w-8 h-8 bg-accent flex items-center justify-center rotate-45 group-hover:rotate-0 transition-transform duration-500">
-            <span className="-rotate-45 group-hover:rotate-0 transition-transform duration-500 text-xs">CM</span>
+            <span className="-rotate-45 group-hover:rotate-0 transition-transform duration-500 text-xs">MC</span>
           </div>
-          <span className="font-playfair text-2xl">Collective Memory</span>
+          <span className="font-playfair text-2xl">Memoria Colectiva</span>
         </Link>
 
         {/* Desktop Nav */}
@@ -51,7 +51,7 @@ export const Navbar = () => {
           ))}
           <button className="flex items-center gap-1 text-sm text-muted-foreground hover:text-white transition-colors">
             <Globe className="w-4 h-4" />
-            <span>EN</span>
+            <span>ES</span>
           </button>
         </div>
 
@@ -86,10 +86,10 @@ export const Navbar = () => {
               ))}
               <div className="flex items-center gap-2 pt-4 border-t border-white/10">
                 <Globe className="w-4 h-4 text-muted-foreground" />
-                <span className="text-muted-foreground">Language:</span>
-                <button className="text-accent font-bold">EN</button>
+                <span className="text-muted-foreground">Idioma:</span>
+                <button className="text-accent font-bold">ES</button>
                 <span className="text-white/20">|</span>
-                <button className="text-muted-foreground">ES</button>
+                <button className="text-muted-foreground">EN</button>
               </div>
             </div>
           </motion.div>

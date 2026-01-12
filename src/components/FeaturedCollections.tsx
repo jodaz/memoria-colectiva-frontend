@@ -7,20 +7,20 @@ import { ArrowUpRight } from "lucide-react";
 export const FeaturedCollections = () => {
   const collections = [
     {
-      title: "Social Resistance",
-      description: "Visual documentation of street protests, strikes, and movements for democratic change.",
+      title: "Resistencia Social",
+      description: "Documentación visual de protestas callejeras, huelgas y movimientos por el cambio democrático.",
       image: "/images/resistance.png",
       href: "#",
     },
     {
-      title: "Civil Rights Archive",
-      description: "A digital repository of original documents, letters, and legislative papers from the civil rights era.",
+      title: "Archivo de Derechos Civiles",
+      description: "Un repositorio digital de documentos originales, cartas y papeles legislativos de la era de los derechos civiles.",
       image: "/images/civil_rights.png",
       href: "#",
     },
     {
-      title: "Historical Artifacts",
-      description: "Personal items and historical objects preserved to tell the human side of history.",
+      title: "Artefactos Históricos",
+      description: "Objetos personales y artículos históricos preservados para contar el lado humano de la historia.",
       image: "/images/artifacts.png",
       href: "#",
     },
@@ -31,11 +31,11 @@ export const FeaturedCollections = () => {
       <div className="container mx-auto px-6">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
           <div className="max-w-2xl">
-            <h2 className="text-sm uppercase tracking-[0.4em] text-accent mb-4">Core Collections</h2>
-            <h3 className="text-4xl md:text-5xl font-bold tracking-tight">Safeguarding the Fragments of Yesterday</h3>
+            <h2 className="text-sm uppercase tracking-[0.4em] text-accent mb-4">Colecciones Principales</h2>
+            <h3 className="text-4xl md:text-5xl font-bold tracking-tight">Salvaguardando los Fragmentos del Ayer</h3>
           </div>
           <button className="text-sm font-bold border-b-2 border-accent pb-1 hover:text-accent transition-colors">
-            View All Collections
+            Ver Todas las Colecciones
           </button>
         </div>
 

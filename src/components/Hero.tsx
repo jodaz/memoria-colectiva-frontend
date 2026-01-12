@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight, Lock } from "lucide-react";
 
@@ -21,26 +22,26 @@ export const Hero = () => {
         >
           <div className="flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm text-xs tracking-widest uppercase text-muted-foreground animate-pulse">
             <Lock className="w-3 h-3 text-accent" />
-            <span>Encrypted Forensic Archive</span>
+            <span>Archivo Forense Cifrado</span>
           </div>
 
           <h1 className="text-6xl md:text-9xl font-bold mb-6 tracking-tighter text-white">
-            NEVER <br />
-            <span className="text-accent italic font-playfair">FORGET</span>
+            NUNCA <br />
+            <span className="text-accent italic font-playfair">OLVIDAREMOS</span>
           </h1>
 
           <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mb-10 leading-relaxed">
-            Preserving historical memory, documenting human rights, and safeguarding the collective voice of resistance within an indestructible digital vault.
+            Preservando la memoria histórica, documentando los derechos humanos y salvaguardando la voz colectiva de la resistencia en una bóveda digital indestructible.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4">
-            <button className="px-8 py-4 bg-accent hover:bg-accent/90 text-white font-bold transition-all flex items-center justify-center gap-2 group">
-              Explore Archive
+            <Link href="/feed" className="px-8 py-4 bg-accent hover:bg-accent/90 text-white font-bold transition-all flex items-center justify-center gap-2 group">
+              Explorar Archivo
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </button>
-            <button className="px-8 py-4 border border-white/20 hover:bg-white/5 text-white font-bold transition-all flex items-center justify-center gap-2">
-              Submit Evidence
-            </button>
+            </Link>
+            <Link href="/login" className="px-8 py-4 border border-white/20 hover:bg-white/5 text-white font-bold transition-all flex items-center justify-center gap-2">
+              Enviar Evidencia
+            </Link>
           </div>
         </motion.div>
       </div>
@@ -55,7 +56,7 @@ export const Hero = () => {
         transition={{ repeat: Infinity, duration: 2 }}
         className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
       >
-        <span className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground">Scroll to enter</span>
+        <span className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground">Desplazar para entrar</span>
         <div className="w-[1px] h-12 bg-gradient-to-b from-accent to-transparent" />
       </motion.div>
     </section>
