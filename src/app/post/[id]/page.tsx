@@ -5,7 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Navbar } from '@/components/Navbar';
 import { ArrowLeft, MapPin, Calendar, User, Share2, MessageSquare, Download } from 'lucide-react';
-import { TESTIMONIOS } from '@/data/testimonios';
+import { usePostStore } from '@/store/postStore';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -17,8 +17,9 @@ export default function PostDetailPage() {
   const params = useParams();
   const router = useRouter();
   const id = Number(params.id);
+  const { getTestimonio } = usePostStore();
   
-  const post = TESTIMONIOS.find((item) => item.id === id);
+  const post = getTestimonio(id);
 
   if (!post) {
     return (

@@ -4,10 +4,11 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Navbar } from '@/components/Navbar';
-import { MessageSquare, Map as MapIcon, Clock, Share2, MoreHorizontal, MapPin } from 'lucide-react';
+import { MessageSquare, Map as MapIcon, Clock, Share2, MoreHorizontal, MapPin, Plus } from 'lucide-react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
-import { TESTIMONIOS, type Testimonio } from '@/data/testimonios';
+import { usePostStore } from '@/store/postStore';
+import { type Testimonio } from '@/data/testimonios';
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -15,6 +16,7 @@ function cn(...inputs: ClassValue[]) {
 
 export default function FeedPage() {
   const [activeTab, setActiveTab] = useState<'recientes' | 'mapa'>('recientes');
+  const { testimonios } = usePostStore();
 
   return (
     <main className="min-h-screen bg-[#0a0a0a] text-white">
@@ -32,32 +34,42 @@ export default function FeedPage() {
             </p>
           </div>
           
-          {/* Tabs */}
-          <div className="flex bg-white/5 p-1 rounded-2xl border border-white/10 backdrop-blur-sm self-start md:self-auto">
-            <button
-              onClick={() => setActiveTab('recientes')}
-              className={cn(
-                "flex items-center gap-2 px-6 py-2.5 rounded-xl transition-all font-medium",
-                activeTab === 'recientes' 
-                  ? "bg-accent text-white shadow-lg shadow-accent/20" 
-                  : "text-gray-400 hover:text-white"
-              )}
+          {/* Tabs & Create Button */}
+          <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
+            <div className="flex bg-white/5 p-1 rounded-2xl border border-white/10 backdrop-blur-sm">
+              <button
+                onClick={() => setActiveTab('recientes')}
+                className={cn(
+                  "flex items-center gap-2 px-6 py-2.5 rounded-xl transition-all font-medium",
+                  activeTab === 'recientes' 
+                    ? "bg-accent text-white shadow-lg shadow-accent/20" 
+                    : "text-gray-400 hover:text-white"
+                )}
+              >
+                <Clock className="w-4 h-4" />
+                Recientes
+              </button>
+              <button
+                onClick={() => setActiveTab('mapa')}
+                className={cn(
+                  "flex items-center gap-2 px-6 py-2.5 rounded-xl transition-all font-medium",
+                  activeTab === 'mapa' 
+                    ? "bg-accent text-white shadow-lg shadow-accent/20" 
+                    : "text-gray-400 hover:text-white"
+                )}
+              >
+                <MapIcon className="w-4 h-4" />
+                Mapa
+              </button>
+            </div>
+
+            <Link 
+              href="/posts/new"
+              className="flex items-center gap-2 px-6 py-3 bg-white text-black rounded-2xl font-bold hover:bg-gray-200 transition-all shadow-lg shadow-white/5"
             >
-              <Clock className="w-4 h-4" />
-              Recientes
-            </button>
-            <button
-              onClick={() => setActiveTab('mapa')}
-              className={cn(
-                "flex items-center gap-2 px-6 py-2.5 rounded-xl transition-all font-medium",
-                activeTab === 'mapa' 
-                  ? "bg-accent text-white shadow-lg shadow-accent/20" 
-                  : "text-gray-400 hover:text-white"
-              )}
-            >
-              <MapIcon className="w-4 h-4" />
-              Mapa
-            </button>
+              <Plus className="w-4 h-4" />
+              Crear testimonio
+            </Link>
           </div>
         </div>
 
@@ -72,7 +84,7 @@ export default function FeedPage() {
               transition={{ duration: 0.4 }}
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
             >
-              {TESTIMONIOS.map((item) => (
+              {testimonios.map((item) => (
                 <TestimonioCard key={item.id} item={item} />
               ))}
             </motion.div>
