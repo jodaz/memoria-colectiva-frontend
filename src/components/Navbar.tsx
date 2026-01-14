@@ -2,12 +2,14 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { Menu, X, Globe } from "lucide-react";
+import { Menu, X, Globe, User } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useAuthStore } from "@/store/authStore";
 
 export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { isAuthenticated } = useAuthStore();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -18,10 +20,10 @@ export const Navbar = () => {
   }, []);
 
   const navLinks = [
-    { name: "Archivo", href: "#archive" },
-    { name: "Galería", href: "#gallery" },
-    { name: "Testimonios", href: "#testimonials" },
-    { name: "Contribuir", href: "#contribute" },
+    { name: "Archivo", href: "/feed#archive" },
+    { name: "Galería", href: "/feed#gallery" },
+    { name: "Testimonios", href: "/feed" },
+    { name: "Contribuir", href: "/feed#contribute" },
   ];
 
   return (
@@ -49,6 +51,17 @@ export const Navbar = () => {
               {link.name}
             </Link>
           ))}
+          
+          {isAuthenticated && (
+            <Link 
+              href="/profile"
+              className="text-sm font-medium flex items-center gap-2 text-white bg-white/10 px-4 py-2 rounded-full hover:bg-white/20 transition-all"
+            >
+              <User className="w-4 h-4" />
+              Mi Perfil
+            </Link>
+          )}
+
           <button className="flex items-center gap-1 text-sm text-muted-foreground hover:text-white transition-colors">
             <Globe className="w-4 h-4" />
             <span>ES</span>
@@ -84,6 +97,18 @@ export const Navbar = () => {
                   {link.name}
                 </Link>
               ))}
+              
+              {isAuthenticated && (
+                <Link
+                  href="/profile"
+                  className="text-lg font-medium text-white flex items-center gap-2"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <User className="w-5 h-5" />
+                  Mi Perfil
+                </Link>
+              )}
+
               <div className="flex items-center gap-2 pt-4 border-t border-white/10">
                 <Globe className="w-4 h-4 text-muted-foreground" />
                 <span className="text-muted-foreground">Idioma:</span>
