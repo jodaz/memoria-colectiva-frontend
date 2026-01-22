@@ -6,12 +6,19 @@ import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Navbar } from '@/components/Navbar';
 import { useAuthStore } from '@/store/authStore';
-import { Edit, MapPin, Grid, Heart, MessageSquare } from 'lucide-react';
-import { TESTIMONIOS } from '@/data/testimonios';
+import { Edit, MapPin, Grid, Heart, MessageSquare, LogOut } from 'lucide-react';
+import { signOut } from '@/app/auth/actions';
+import { usePostStore } from '@/store/postStore';
+import { type Testimonio } from '@/data/testimonios';
 
 export default function ProfilePage() {
   const router = useRouter();
   const { user, isAuthenticated } = useAuthStore();
+  const { testimonios, fetchTestimonios, isLoading } = usePostStore();
+
+  React.useEffect(() => {
+    fetchTestimonios();
+  }, [fetchTestimonios]);
 
   if (!isAuthenticated || !user) {
     if (typeof window !== 'undefined') {
@@ -20,8 +27,8 @@ export default function ProfilePage() {
     return null;
   }
 
-  // Mock user's posts (taking the first 3 for demo)
-  const userPosts = TESTIMONIOS.slice(0, 3);
+  // Filter user's posts
+  const userPosts = testimonios.filter((t: Testimonio) => t.userId === user.id);
 
   return (
     <main className="min-h-screen bg-[#0a0a0a] text-white">
@@ -64,11 +71,19 @@ export default function ProfilePage() {
 
                 <Link 
                   href="/profile/edit"
-                  className="w-full py-3 bg-white/10 hover:bg-white/20 text-white font-medium rounded-2xl transition-all flex items-center justify-center gap-2 group"
+                  className="w-full py-3 bg-white/10 hover:bg-white/20 text-white font-medium rounded-2xl transition-all flex items-center justify-center gap-2 group mb-3"
                 >
                   <Edit className="w-4 h-4 group-hover:scale-110 transition-transform" />
                   Editar Perfil
                 </Link>
+
+                <button 
+                  onClick={() => signOut()}
+                  className="w-full py-3 bg-red-500/10 hover:bg-red-500/20 text-red-400 font-medium rounded-2xl transition-all flex items-center justify-center gap-2 group"
+                >
+                  <LogOut className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                  Cerrar Sesión
+                </button>
               </div>
             </div>
           </motion.div>
@@ -86,7 +101,7 @@ export default function ProfilePage() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {userPosts.map((post) => (
+              {userPosts.map((post: Testimonio) => (
                 <Link key={post.id} href={`/post/${post.id}`}>
                   <div className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden group hover:border-white/20 transition-all aspect-square relative">
                     {post.image ? (

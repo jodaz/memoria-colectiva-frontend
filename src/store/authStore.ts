@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 interface User {
+  id: string;
   username: string;
   firstName?: string;
   lastName?: string;
@@ -14,8 +15,7 @@ interface User {
 interface AuthState {
   user: User | null;
   isAuthenticated: boolean;
-  login: (username: string) => void;
-  signup: (username: string) => void;
+  setUser: (user: User | null) => void;
   logout: () => void;
   updateProfile: (data: Partial<User>) => void;
 }
@@ -25,33 +25,8 @@ export const useAuthStore = create<AuthState>()(
     (set) => ({
       user: null,
       isAuthenticated: false,
-      login: (username) => {
-        // Mock login
-        set({ 
-          user: { 
-            username, 
-            firstName: "Usuario",
-            lastName: "Demo",
-            bio: "Resistiendo y documentando.", 
-            avatar: `https://ui-avatars.com/api/?name=${username}&background=random`,
-            postsCount: 12
-          }, 
-          isAuthenticated: true 
-        });
-      },
-      signup: (username) => {
-        // Mock signup
-        set({ 
-          user: { 
-            username, 
-            firstName: "",
-            lastName: "",
-            bio: "Nuevo usuario.", 
-            avatar: `https://ui-avatars.com/api/?name=${username}&background=random`,
-            postsCount: 0
-          }, 
-          isAuthenticated: true 
-        });
+      setUser: (user) => {
+        set({ user, isAuthenticated: !!user });
       },
       logout: () => {
         set({ user: null, isAuthenticated: false });

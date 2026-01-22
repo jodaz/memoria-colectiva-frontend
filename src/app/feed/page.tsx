@@ -10,6 +10,7 @@ import { twMerge } from 'tailwind-merge';
 import { usePostStore } from '@/store/postStore';
 import { type Testimonio } from '@/data/testimonios';
 import { ShareButton } from '@/components/ShareButton';
+import { useAuthStore } from '@/store/authStore';
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -17,7 +18,12 @@ function cn(...inputs: ClassValue[]) {
 
 export default function FeedPage() {
   const [activeTab, setActiveTab] = useState<'recientes' | 'mapa'>('recientes');
-  const { testimonios } = usePostStore();
+  const { testimonios, fetchTestimonios, isLoading } = usePostStore();
+  const { isAuthenticated } = useAuthStore();
+
+  React.useEffect(() => {
+    fetchTestimonios();
+  }, [fetchTestimonios]);
 
   return (
     <main className="min-h-screen bg-[#0a0a0a] text-white">
@@ -64,31 +70,66 @@ export default function FeedPage() {
               </button>
             </div>
 
-            <Link 
-              href="/posts/new"
-              className="flex items-center gap-2 px-6 py-3 bg-white text-black rounded-2xl font-bold hover:bg-gray-200 transition-all shadow-lg shadow-white/5"
-            >
-              <Plus className="w-4 h-4" />
-              Crear testimonio
-            </Link>
+            {isAuthenticated && (
+              <Link 
+                href="/posts/new"
+                className="flex items-center gap-2 px-6 py-3 bg-white text-black rounded-2xl font-bold hover:bg-gray-200 transition-all shadow-lg shadow-white/5"
+              >
+                <Plus className="w-4 h-4" />
+                Crear testimonio
+              </Link>
+            )}
           </div>
         </div>
 
         {/* Content Section */}
         <AnimatePresence mode="wait">
           {activeTab === 'recientes' ? (
-            <motion.div
-              key="recientes"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.4 }}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-            >
-              {testimonios.map((item) => (
-                <TestimonioCard key={item.id} item={item} />
-              ))}
-            </motion.div>
+            isLoading ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {[...Array(6)].map((_, i) => (
+                  <div key={i} className="h-[400px] bg-white/5 border border-white/10 rounded-3xl animate-pulse" />
+                ))}
+              </div>
+            ) : testimonios.length > 0 ? (
+              <motion.div
+                key="recientes-list"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.4 }}
+                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+              >
+                {testimonios.map((item) => (
+                  <TestimonioCard key={item.id} item={item} />
+                ))}
+              </motion.div>
+            ) : (
+              <motion.div
+                key="recientes-empty"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.4 }}
+                className="w-full py-32 bg-white/5 border border-white/10 rounded-3xl flex flex-col items-center justify-center p-12 text-center"
+              >
+                <div className="w-20 h-20 bg-white/5 rounded-3xl flex items-center justify-center mb-6">
+                  <MessageSquare className="w-10 h-10 text-gray-600" />
+                </div>
+                <h3 className="text-2xl font-bold mb-2 text-white">No hay testimonios aún</h3>
+                <p className="text-gray-400 max-w-md">
+                  El archivo está listo. Sé el primero en documentar y preservar la memoria colectiva.
+                </p>
+                {!isAuthenticated && (
+                  <Link 
+                    href="/login" 
+                    className="mt-8 px-8 py-3 bg-accent text-white rounded-xl font-bold hover:bg-accent/90 transition-all"
+                  >
+                    Iniciar sesión para contribuir
+                  </Link>
+                )}
+              </motion.div>
+            )
           ) : (
             <motion.div
               key="mapa"

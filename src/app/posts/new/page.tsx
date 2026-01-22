@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
@@ -59,24 +60,20 @@ export default function NewPostPage() {
   const onSubmit = async (data: TestimonialCreateInput) => {
     setIsSubmittingManual(true);
 
-    // Simulate submission delay
-    await new Promise(resolve => setTimeout(resolve, 2000));
-
-    // eslint-disable-next-line react-hooks/purity
-    const newId = Date.now();
-    const newPost = {
-      id: newId,
-      title: data.title || 'Sin Título',
-      author: "Usuario Anónimo",
-      date: new Date().toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }),
+    const result = await addTestimonio({
+      title: data.title,
+      content: data.content,
       location: data.location,
-      description: data.content,
-      image: media.find(m => m.type === 'image')?.url,
-      assets: media.map(m => m.url)
-    };
+      files: media.map(m => m.url) // In a real app, you'd upload files first and get URLs
+    });
 
-    addTestimonio(newPost);
-    router.push(`/post/${newId}`);
+    setIsSubmittingManual(false);
+
+    if (result) {
+      router.push(`/post/${result.id}`);
+    } else {
+      alert('Error al publicar el testimonio. Por favor intenta de nuevo.');
+    }
   };
 
   return (

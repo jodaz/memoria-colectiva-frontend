@@ -3,12 +3,12 @@
 import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { signUp } from '@/app/auth/actions';
 import { useForm } from 'react-hook-form';
 import { signupSchema, type SignupInput } from '@/lib/validations/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { motion } from 'framer-motion';
-import { UserPlus, User, Lock, ArrowRight, Mail } from 'lucide-react';
-import { useAuthStore } from '@/store/authStore';
+import { UserPlus, User, Lock, ArrowRight, AlertCircle } from 'lucide-react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -18,7 +18,7 @@ function cn(...inputs: ClassValue[]) {
 
 export default function SignupPage() {
   const router = useRouter();
-  const signup = useAuthStore((state) => state.signup);
+  const [serverError, setServerError] = React.useState<string | null>(null);
   const {
     register,
     handleSubmit,
@@ -27,17 +27,18 @@ export default function SignupPage() {
     resolver: zodResolver(signupSchema),
     defaultValues: {
       username: '',
-      email: '',
       password: '',
       confirmPassword: '',
     },
   });
 
   const onSubmit = async (data: SignupInput) => {
-    // Simular retraso
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    signup(data.username);
-    router.push('/feed');
+    setServerError(null);
+    const result = await signUp(data);
+
+    if (result?.error) {
+      setServerError(result.error);
+    }
   };
 
   return (
@@ -65,6 +66,12 @@ export default function SignupPage() {
           </div>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+            {serverError && (
+              <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-2xl flex items-center gap-3 text-red-400 text-sm">
+                <AlertCircle className="w-5 h-5 shrink-0" />
+                <p>{serverError}</p>
+              </div>
+            )}
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-2 ml-1">
                 Usuario
@@ -87,31 +94,6 @@ export default function SignupPage() {
               </div>
               {errors.username && (
                 <p className="mt-1 text-xs text-red-400 ml-1">{errors.username.message as string}</p>
-              )}
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2 ml-1">
-                Correo Electrónico
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Mail className="h-5 w-5 text-gray-500" />
-                </div>
-                <input
-                  {...register('email')}
-                  type="email"
-                  className={cn(
-                    "block w-full pl-10 pr-3 py-3 bg-white/5 border rounded-2xl focus:ring-2 transition-all outline-none",
-                    errors.email 
-                      ? "border-red-500/50 focus:ring-red-500/20" 
-                      : "border-white/10 focus:border-purple-500/50 focus:ring-purple-500/20"
-                  )}
-                  placeholder="ejemplo@correo.com (opcional)"
-                />
-              </div>
-              {errors.email && (
-                <p className="mt-1 text-xs text-red-400 ml-1">{errors.email.message as string}</p>
               )}
             </div>
 
@@ -191,6 +173,15 @@ export default function SignupPage() {
               </Link>
             </p>
           </div>
+        </div>
+        <div className="mt-6 text-center">
+          <Link 
+            href="/" 
+            className="text-gray-500 hover:text-white text-sm transition-colors flex items-center justify-center gap-2 group"
+          >
+            <ArrowRight className="w-4 h-4 rotate-180 group-hover:-translate-x-1 transition-transform" />
+            Volver al inicio
+          </Link>
         </div>
       </motion.div>
     </div>

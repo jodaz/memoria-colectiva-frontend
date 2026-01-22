@@ -20,10 +20,8 @@ export const Navbar = () => {
   }, []);
 
   const navLinks = [
-    { name: "Archivo", href: "/feed#archive" },
-    { name: "Galería", href: "/feed#gallery" },
     { name: "Testimonios", href: "/feed" },
-    { name: "Contribuir", href: "/feed#contribute" },
+    { name: "Contribuir", href: "/login" },
   ];
 
   return (
@@ -61,11 +59,6 @@ export const Navbar = () => {
               Mi Perfil
             </Link>
           )}
-
-          <button className="flex items-center gap-1 text-sm text-muted-foreground hover:text-white transition-colors">
-            <Globe className="w-4 h-4" />
-            <span>ES</span>
-          </button>
         </div>
 
         {/* Mobile Toggle */}
@@ -108,14 +101,6 @@ export const Navbar = () => {
                   Mi Perfil
                 </Link>
               )}
-
-              <div className="flex items-center gap-2 pt-4 border-t border-white/10">
-                <Globe className="w-4 h-4 text-muted-foreground" />
-                <span className="text-muted-foreground">Idioma:</span>
-                <button className="text-accent font-bold">ES</button>
-                <span className="text-white/20">|</span>
-                <button className="text-muted-foreground">EN</button>
-              </div>
             </div>
           </motion.div>
         )}

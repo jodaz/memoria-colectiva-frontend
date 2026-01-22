@@ -3,12 +3,12 @@
 import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { signIn } from '@/app/auth/actions';
 import { useForm } from 'react-hook-form';
 import { loginSchema, type LoginInput } from '@/lib/validations/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { motion } from 'framer-motion';
-import { LogIn, User, Lock, ArrowRight } from 'lucide-react';
-import { useAuthStore } from '@/store/authStore';
+import { LogIn, User, Lock, ArrowRight, AlertCircle } from 'lucide-react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -18,7 +18,7 @@ function cn(...inputs: ClassValue[]) {
 
 export default function LoginPage() {
   const router = useRouter();
-  const login = useAuthStore((state) => state.login);
+  const [serverError, setServerError] = React.useState<string | null>(null);
   const {
     register,
     handleSubmit,
@@ -32,10 +32,12 @@ export default function LoginPage() {
   });
 
   const onSubmit = async (data: LoginInput) => {
-    // Simular retraso
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    login(data.username);
-    router.push('/feed');
+    setServerError(null);
+    const result = await signIn(data);
+    
+    if (result?.error) {
+      setServerError(result.error);
+    }
   };
 
   return (
@@ -63,6 +65,12 @@ export default function LoginPage() {
           </div>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            {serverError && (
+              <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-2xl flex items-center gap-3 text-red-400 text-sm">
+                <AlertCircle className="w-5 h-5 shrink-0" />
+                <p>{serverError}</p>
+              </div>
+            )}
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-2 ml-1">
                 Usuario
@@ -139,6 +147,15 @@ export default function LoginPage() {
               </Link>
             </p>
           </div>
+        </div>
+        <div className="mt-6 text-center">
+          <Link 
+            href="/" 
+            className="text-gray-500 hover:text-white text-sm transition-colors flex items-center justify-center gap-2 group"
+          >
+            <ArrowRight className="w-4 h-4 rotate-180 group-hover:-translate-x-1 transition-transform" />
+            Volver al inicio
+          </Link>
         </div>
       </motion.div>
     </div>

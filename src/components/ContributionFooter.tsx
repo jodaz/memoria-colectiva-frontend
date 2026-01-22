@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/link";
 import { FileText, Video, Mic, Image as ImageIcon, ShieldCheck, EyeOff, Lock } from "lucide-react";
 
 export const ContributionFooter = () => {
@@ -50,9 +51,9 @@ export const ContributionFooter = () => {
             ))}
           </div>
 
-          <button className="px-12 py-6 bg-accent hover:bg-accent/90 text-white text-lg font-bold transition-all shadow-[0_0_30px_rgba(208,24,28,0.3)] hover:shadow-[0_0_50px_rgba(208,24,28,0.5)]">
+          <Link href="/login" className="inline-block px-12 py-6 bg-accent hover:bg-accent/90 text-white text-lg font-bold transition-all shadow-[0_0_30px_rgba(208,24,28,0.3)] hover:shadow-[0_0_50px_rgba(208,24,28,0.5)]">
             Contribuir de Forma Segura
-          </button>
+          </Link>
           
           <p className="mt-8 text-xs text-muted-foreground max-w-md mx-auto leading-relaxed">
             Al contribuir, aceptas nuestros protocolos de anonimato. Tu identidad nunca será almacenada ni compartida sin un consentimiento explícito de múltiples factores.

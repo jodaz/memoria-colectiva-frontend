@@ -17,6 +17,8 @@ export const metadata: Metadata = {
   description: "Un museo digital de alta seguridad y archivo de derechos humanos dedicado a la memoria colectiva y la verdad histórica.",
 };
 
+import AuthProvider from "@/components/AuthProvider";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -27,8 +29,10 @@ export default function RootLayout({
       <body
         className={`${playfair.variable} ${inter.variable} antialiased`}
       >
-        <div className="grain" />
-        {children}
+        <AuthProvider>
+          <div className="grain" />
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );

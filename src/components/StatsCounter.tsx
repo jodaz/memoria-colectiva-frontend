@@ -3,11 +3,15 @@
 import { motion } from "framer-motion";
 import { Users, BookOpen, Clock } from "lucide-react";
 
+import { usePostStore } from "@/store/postStore";
+
 export const StatsCounter = () => {
+  const { testimonios } = usePostStore();
+  
   const stats = [
-    { label: "Víctimas Documentadas", value: "24,850", icon: Users },
-    { label: "Artefactos Preservados", value: "112,400", icon: BookOpen },
-    { label: "Años de Historia", value: "45 Años", icon: Clock },
+    { label: "Usuarios Creados", value: "24,850", icon: Users },
+    { label: "Testimonios Publicados", value: testimonios.length.toLocaleString(), icon: BookOpen },
+    { label: "Años de Dictadura", value: "27 Años", icon: Clock },
   ];
 
   return (

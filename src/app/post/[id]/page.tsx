@@ -17,10 +17,25 @@ function cn(...inputs: ClassValue[]) {
 export default function PostDetailPage() {
   const params = useParams();
   const router = useRouter();
-  const id = Number(params.id);
-  const { getTestimonio } = usePostStore();
+  const id = params.id as string;
+  const { getTestimonio, fetchTestimonios, testimonios, isLoading } = usePostStore();
   
+  React.useEffect(() => {
+    if (testimonios.length === 0) {
+      fetchTestimonios();
+    }
+  }, [fetchTestimonios, testimonios.length]);
+
   const post = getTestimonio(id);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-[#0a0a0a] text-white flex flex-col items-center justify-center p-4">
+        <div className="w-8 h-8 border-2 border-accent border-t-transparent rounded-full animate-spin mb-4" />
+        <p>Cargando testimonio...</p>
+      </div>
+    );
+  }
 
   if (!post) {
     return (

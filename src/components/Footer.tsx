@@ -22,10 +22,9 @@ export const Footer = () => {
           <div>
             <h4 className="font-bold mb-6 uppercase text-xs tracking-widest text-accent">Navegación</h4>
             <ul className="space-y-4 text-sm text-muted-foreground">
-              <li><Link href="#archive" className="hover:text-white transition-colors">Archivo Digital</Link></li>
-              <li><Link href="#gallery" className="hover:text-white transition-colors">Arte y Murales</Link></li>
+              <li><Link href="/feed" className="hover:text-white transition-colors">Testimonios</Link></li>
+              <li><Link href="/login" className="hover:text-white transition-colors">Contribuir</Link></li>
               <li><Link href="#" className="hover:text-white transition-colors">Línea del Tiempo</Link></li>
-              <li><Link href="#testimonials" className="hover:text-white transition-colors">Voces de la Verdad</Link></li>
             </ul>
           </div>
           

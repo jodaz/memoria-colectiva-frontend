@@ -1,5 +1,5 @@
 export interface Testimonio {
-  id: number;
+  id: string | number;
   title: string;
   author: string;
   date: string;
@@ -7,6 +7,7 @@ export interface Testimonio {
   description: string;
   image?: string;
   assets?: string[];
+  userId?: string;
 }
 
 export const TESTIMONIOS: Testimonio[] = [
