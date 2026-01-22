@@ -6,13 +6,16 @@ import { useForm } from 'react-hook-form';
 import { motion } from 'framer-motion';
 import { Navbar } from '@/components/Navbar';
 import { useAuthStore } from '@/store/authStore';
-import { Save, X, User as UserIcon, AlignLeft } from 'lucide-react';
+import { Save, X, User as UserIcon, AlignLeft, Phone } from 'lucide-react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
+
+import { profileUpdateSchema, type ProfileUpdateInput } from '@/lib/validations/profile';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 export default function EditProfilePage() {
   const router = useRouter();
@@ -22,17 +25,18 @@ export default function EditProfilePage() {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm({
+  } = useForm<ProfileUpdateInput>({
+    resolver: zodResolver(profileUpdateSchema),
     defaultValues: {
       username: user?.username || '',
       firstName: user?.firstName || '',
       lastName: user?.lastName || '',
+      phone: user?.phone || '',
       bio: user?.bio || '',
-      avatar: user?.avatar || '',
     },
   });
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: ProfileUpdateInput) => {
     // Simular retraso
     await new Promise((resolve) => setTimeout(resolve, 800));
     updateProfile(data);
@@ -63,10 +67,7 @@ export default function EditProfilePage() {
                     <UserIcon className="h-5 w-5 text-gray-500" />
                   </div>
                   <input
-                    {...register('username', { 
-                      required: 'El usuario es obligatorio',
-                      minLength: { value: 3, message: 'Mínimo 3 caracteres' }
-                    })}
+                    {...register('username')}
                     type="text"
                     className={cn(
                       "block w-full pl-10 pr-3 py-3 bg-white/5 border rounded-2xl focus:ring-2 transition-all outline-none",
@@ -107,17 +108,31 @@ export default function EditProfilePage() {
                 </div>
               </div>
 
-              {/* Avatar URL Field */}
+
+              {/* Phone Field */}
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2 ml-1">
-                  URL de Imagen de Perfil
+                  Teléfono
                 </label>
-                <input
-                  {...register('avatar')}
-                  type="url"
-                  className="block w-full px-3 py-3 bg-white/5 border border-white/10 rounded-2xl focus:ring-2 focus:border-accent/50 focus:ring-accent/20 transition-all outline-none"
-                  placeholder="https://ejemplo.com/imagen.jpg"
-                />
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Phone className="h-5 w-5 text-gray-500" />
+                  </div>
+                  <input
+                    {...register('phone')}
+                    type="tel"
+                    className={cn(
+                      "block w-full pl-10 pr-3 py-3 bg-white/5 border rounded-2xl focus:ring-2 transition-all outline-none",
+                      errors.phone 
+                        ? "border-red-500/50 focus:ring-red-500/20" 
+                        : "border-white/10 focus:border-accent/50 focus:ring-accent/20"
+                    )}
+                    placeholder="+58 412 000 0000"
+                  />
+                </div>
+                {errors.phone && (
+                  <p className="mt-1 text-xs text-red-400 ml-1">{errors.phone.message as string}</p>
+                )}
               </div>
 
               {/* Bio Field */}
@@ -130,9 +145,7 @@ export default function EditProfilePage() {
                     <AlignLeft className="h-5 w-5 text-gray-500" />
                   </div>
                   <textarea
-                    {...register('bio', { 
-                      maxLength: { value: 150, message: 'Máximo 150 caracteres' }
-                    })}
+                    {...register('bio')}
                     rows={4}
                     className={cn(
                       "block w-full pl-10 pr-3 py-3 bg-white/5 border rounded-2xl focus:ring-2 transition-all outline-none resize-none",

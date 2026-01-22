@@ -43,7 +43,7 @@ export const Testimonials = () => {
             >
               <Quote className="w-10 h-10 text-accent mb-6 opacity-40 group-hover:opacity-100 transition-opacity" />
               <p className="text-lg italic text-gray-200 mb-8 leading-relaxed">
-                "{t.quote}"
+                &quot;{t.quote}&quot;
               </p>
               <div>
                 <h4 className="font-bold text-white">{t.name}</h4>

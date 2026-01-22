@@ -1,11 +1,12 @@
-'use client';
-
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Navbar } from '@/components/Navbar';
 import { usePostStore } from '@/store/postStore';
 import { ArrowLeft, Image as ImageIcon, Video, MapPin, Send, Trash2, ShieldCheck, Lock } from 'lucide-react';
+import { useForm } from 'react-hook-form';
+import { testimonialCreateSchema, type TestimonialCreateInput } from '@/lib/validations/testimonial';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 const VENEZUELAN_CITIES = [
   "Caracas",
@@ -20,19 +21,27 @@ const VENEZUELAN_CITIES = [
   "Mérida",
   "Cumana",
   "Barinas",
-  "Exilio (Fuera de Venezuela)"
 ];
 
 export default function NewPostPage() {
   const router = useRouter();
   const { addTestimonio } = usePostStore();
-  const [formData, setFormData] = useState({
-    title: '',
-    content: '',
-    location: '',
-  });
   const [media, setMedia] = useState<{ type: 'image' | 'video', url: string }[]>([]);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmittingManual, setIsSubmittingManual] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<TestimonialCreateInput>({
+    resolver: zodResolver(testimonialCreateSchema),
+    defaultValues: {
+      title: '',
+      content: '',
+      location: '',
+      files: [],
+    },
+  });
 
   const handleMediaUpload = (e: React.ChangeEvent<HTMLInputElement>, type: 'image' | 'video') => {
     const file = e.target.files?.[0];
@@ -47,29 +56,26 @@ export default function NewPostPage() {
     setMedia(media.filter((_, i) => i !== index));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!formData.title || !formData.content || !formData.location) return;
-
-    setIsSubmitting(true);
+  const onSubmit = async (data: TestimonialCreateInput) => {
+    setIsSubmittingManual(true);
 
     // Simulate submission delay
     await new Promise(resolve => setTimeout(resolve, 2000));
 
+    // eslint-disable-next-line react-hooks/purity
     const newId = Date.now();
     const newPost = {
       id: newId,
-      title: formData.title,
-      author: "Usuario Anónimo", // Should ideally come from authStore
+      title: data.title || 'Sin Título',
+      author: "Usuario Anónimo",
       date: new Date().toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }),
-      location: formData.location,
-      description: formData.content,
+      location: data.location,
+      description: data.content,
       image: media.find(m => m.type === 'image')?.url,
       assets: media.map(m => m.url)
     };
 
     addTestimonio(newPost);
-
     router.push(`/post/${newId}`);
   };
 
@@ -106,18 +112,19 @@ export default function NewPostPage() {
             </div>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-8">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
             {/* Title */}
             <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-400 ml-1">Título del Testimonio</label>
+              <label className="text-sm font-medium text-gray-400 ml-1">Título del Testimonio (Opcional)</label>
               <input
+                {...register('title')}
                 type="text"
-                required
-                value={formData.title}
-                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                 placeholder="Ej. La noche en que las calles hablaron"
                 className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 focus:outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/50 transition-all text-lg font-medium"
               />
+              {errors.title && (
+                <p className="text-xs text-red-400 ml-1">{errors.title.message as string}</p>
+              )}
             </div>
 
             {/* Location */}
@@ -126,9 +133,7 @@ export default function NewPostPage() {
               <div className="relative">
                 <MapPin className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
                 <select
-                  required
-                  value={formData.location}
-                  onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+                  {...register('location')}
                   className="w-full bg-white/5 border border-white/10 rounded-2xl pl-14 pr-6 py-4 focus:outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/50 transition-all appearance-none cursor-pointer"
                 >
                   <option value="" disabled className="bg-[#0a0a0a]">Selecciona una ciudad</option>
@@ -137,19 +142,23 @@ export default function NewPostPage() {
                   ))}
                 </select>
               </div>
+              {errors.location && (
+                <p className="text-xs text-red-400 ml-1">{errors.location.message as string}</p>
+              )}
             </div>
 
             {/* Content */}
             <div className="space-y-2">
               <label className="text-sm font-medium text-gray-400 ml-1">Relato de los Hechos</label>
               <textarea
-                required
+                {...register('content')}
                 rows={6}
-                value={formData.content}
-                onChange={(e) => setFormData({ ...formData, content: e.target.value })}
                 placeholder="Escribe aquí tu testimonio lo más detallado posible..."
                 className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 focus:outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/50 transition-all resize-none leading-relaxed"
               />
+              {errors.content && (
+                <p className="text-xs text-red-400 ml-1">{errors.content.message as string}</p>
+              )}
             </div>
 
             {/* Media Upload */}
@@ -210,10 +219,10 @@ export default function NewPostPage() {
             {/* Submit */}
             <button
               type="submit"
-              disabled={isSubmitting}
+              disabled={isSubmittingManual}
               className="w-full py-5 bg-accent hover:bg-accent/90 disabled:bg-gray-800 disabled:cursor-not-allowed text-white text-lg font-bold rounded-2xl transition-all shadow-[0_0_30px_rgba(208,24,28,0.2)] flex items-center justify-center gap-3"
             >
-              {isSubmitting ? (
+              {isSubmittingManual ? (
                 <>
                   <div className="w-5 h-5 border-2 border-white/20 border-t-white rounded-full animate-spin" />
                   <span>Publicando...</span>

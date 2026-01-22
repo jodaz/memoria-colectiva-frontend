@@ -101,13 +101,10 @@ export default function ProfilePage() {
                       </div>
                     )}
                     
-                    <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
-                      <div className="flex items-center gap-6">
-                        <span className="flex items-center gap-2 text-white font-bold">
-                          <Heart className="w-6 h-6 fill-white" />
-                          124
-                        </span>
-                      </div>
+                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
+                      <span className="text-white font-bold px-4 text-center line-clamp-2">
+                        {post.title}
+                      </span>
                     </div>
                   </div>
                 </Link>

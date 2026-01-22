@@ -4,6 +4,8 @@ import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
+import { signupSchema, type SignupInput } from '@/lib/validations/auth';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { motion } from 'framer-motion';
 import { UserPlus, User, Lock, ArrowRight, Mail } from 'lucide-react';
 import { useAuthStore } from '@/store/authStore';
@@ -21,8 +23,8 @@ export default function SignupPage() {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-    watch,
-  } = useForm({
+  } = useForm<SignupInput>({
+    resolver: zodResolver(signupSchema),
     defaultValues: {
       username: '',
       email: '',
@@ -31,9 +33,7 @@ export default function SignupPage() {
     },
   });
 
-  const password = watch('password');
-
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: SignupInput) => {
     // Simular retraso
     await new Promise((resolve) => setTimeout(resolve, 1000));
     signup(data.username);
@@ -74,10 +74,7 @@ export default function SignupPage() {
                   <User className="h-5 w-5 text-gray-500" />
                 </div>
                 <input
-                  {...register('username', { 
-                    required: 'El usuario es obligatorio',
-                    minLength: { value: 3, message: 'Mínimo 3 caracteres' }
-                  })}
+                  {...register('username')}
                   type="text"
                   className={cn(
                     "block w-full pl-10 pr-3 py-3 bg-white/5 border rounded-2xl focus:ring-2 transition-all outline-none",
@@ -102,12 +99,7 @@ export default function SignupPage() {
                   <Mail className="h-5 w-5 text-gray-500" />
                 </div>
                 <input
-                  {...register('email', { 
-                    pattern: {
-                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                      message: 'Correo inválido'
-                    }
-                  })}
+                  {...register('email')}
                   type="email"
                   className={cn(
                     "block w-full pl-10 pr-3 py-3 bg-white/5 border rounded-2xl focus:ring-2 transition-all outline-none",
@@ -132,10 +124,7 @@ export default function SignupPage() {
                   <Lock className="h-5 w-5 text-gray-500" />
                 </div>
                 <input
-                  {...register('password', { 
-                    required: 'La contraseña es obligatoria',
-                    minLength: { value: 6, message: 'Mínimo 6 caracteres' }
-                  })}
+                  {...register('password')}
                   type="password"
                   className={cn(
                     "block w-full pl-10 pr-3 py-3 bg-white/5 border rounded-2xl focus:ring-2 transition-all outline-none",
@@ -160,14 +149,7 @@ export default function SignupPage() {
                   <Lock className="h-5 w-5 text-gray-500" />
                 </div>
                 <input
-                  {...register('confirmPassword', { 
-                    required: 'Confirmar contraseña es obligatorio',
-                    validate: (val: string) => {
-                      if (watch('password') !== val) {
-                        return 'Las contraseñas no coinciden';
-                      }
-                    },
-                  })}
+                  {...register('confirmPassword')}
                   type="password"
                   className={cn(
                     "block w-full pl-10 pr-3 py-3 bg-white/5 border rounded-2xl focus:ring-2 transition-all outline-none",

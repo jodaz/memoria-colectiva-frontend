@@ -5,6 +5,7 @@ interface User {
   username: string;
   firstName?: string;
   lastName?: string;
+  phone?: string;
   bio?: string;
   avatar?: string;
   postsCount?: number;

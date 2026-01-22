@@ -4,6 +4,8 @@ import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
+import { loginSchema, type LoginInput } from '@/lib/validations/auth';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { motion } from 'framer-motion';
 import { LogIn, User, Lock, ArrowRight } from 'lucide-react';
 import { useAuthStore } from '@/store/authStore';
@@ -21,14 +23,15 @@ export default function LoginPage() {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm({
+  } = useForm<LoginInput>({
+    resolver: zodResolver(loginSchema),
     defaultValues: {
       username: '',
       password: '',
     },
   });
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: LoginInput) => {
     // Simular retraso
     await new Promise((resolve) => setTimeout(resolve, 1000));
     login(data.username);
@@ -69,10 +72,7 @@ export default function LoginPage() {
                   <User className="h-5 w-5 text-gray-500" />
                 </div>
                 <input
-                  {...register('username', { 
-                    required: 'El usuario es obligatorio',
-                    minLength: { value: 3, message: 'Mínimo 3 caracteres' }
-                  })}
+                  {...register('username')}
                   type="text"
                   className={cn(
                     "block w-full pl-10 pr-3 py-3 bg-white/5 border rounded-2xl focus:ring-2 transition-all outline-none",
@@ -97,10 +97,7 @@ export default function LoginPage() {
                   <Lock className="h-5 w-5 text-gray-500" />
                 </div>
                 <input
-                  {...register('password', { 
-                    required: 'La contraseña es obligatoria',
-                    minLength: { value: 6, message: 'Mínimo 6 caracteres' }
-                  })}
+                  {...register('password')}
                   type="password"
                   className={cn(
                     "block w-full pl-10 pr-3 py-3 bg-white/5 border rounded-2xl focus:ring-2 transition-all outline-none",

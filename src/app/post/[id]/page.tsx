@@ -8,6 +8,7 @@ import { ArrowLeft, MapPin, Calendar, User, Share2, MessageSquare, Download } fr
 import { usePostStore } from '@/store/postStore';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import { ShareButton } from '@/components/ShareButton';
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -120,15 +121,8 @@ export default function PostDetailPage() {
 
           {/* Footer Actions */}
           <div className="p-8 flex items-center justify-between bg-white/5 border-t border-white/10">
-            <div className="flex items-center gap-6">
-              <button className="flex items-center gap-2 text-gray-400 hover:text-accent transition-colors">
-                <MessageSquare className="w-5 h-5" />
-                <span className="font-medium">Comentar</span>
-              </button>
-              <button className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors">
-                <Share2 className="w-5 h-5" />
-                <span className="font-medium">Compartir</span>
-              </button>
+            <div className="flex items-center justify-end w-full">
+              <ShareButton url={`/post/${post.id}`} title={post.title} />
             </div>
           </div>
         </motion.div>

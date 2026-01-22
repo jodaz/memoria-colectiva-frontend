@@ -9,6 +9,7 @@ import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { usePostStore } from '@/store/postStore';
 import { type Testimonio } from '@/data/testimonios';
+import { ShareButton } from '@/components/ShareButton';
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -159,16 +160,8 @@ function TestimonioCard({ item }: { item: Testimonio }) {
             {item.description}
           </p>
 
-          <div className="flex items-center justify-between pt-4 border-t border-white/5">
-            <div className="flex items-center gap-4">
-              <span className="flex items-center gap-1.5 text-gray-400 transition-colors text-xs font-medium">
-                <MessageSquare className="w-4 h-4" />
-                Comentar
-              </span>
-            </div>
-            <span className="text-gray-400 transition-colors">
-              <Share2 className="w-4 h-4" />
-            </span>
+          <div className="flex items-center justify-end pt-4 border-t border-white/5">
+            <ShareButton url={`/post/${item.id}`} title={item.title} />
           </div>
         </div>
       </motion.div>
