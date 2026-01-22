@@ -18,18 +18,28 @@ export const metadata: Metadata = {
 };
 
 import AuthProvider from "@/components/AuthProvider";
+import { createClient } from "@/lib/supabase/server";
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  const authUser = user ? {
+    id: user.id,
+    username: user.user_metadata.username || user.email?.split('@')[0] || 'usuario',
+    avatar: user.user_metadata.avatar || `https://ui-avatars.com/api/?name=${user.email}&background=random`,
+  } : null;
+
   return (
     <html lang="en" className="dark">
       <body
         className={`${playfair.variable} ${inter.variable} antialiased`}
       >
-        <AuthProvider>
+        <AuthProvider initialUser={authUser}>
           <div className="grain" />
           {children}
         </AuthProvider>

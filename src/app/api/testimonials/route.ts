@@ -1,21 +1,16 @@
 import { createClient } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
+import { getTestimonials } from '@/lib/services/testimonials'
 
 import { testimonialCreateSchema } from '@/lib/validations/testimonial'
 
 export async function GET() {
-  const supabase = await createClient()
-  
-  const { data, error } = await supabase
-    .from('testimonials')
-    .select('*, profiles(username, first_name, last_name)')
-    .order('created_at', { ascending: false })
-
-  if (error) {
+  try {
+    const data = await getTestimonials()
+    return NextResponse.json(data)
+  } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
-
-  return NextResponse.json(data)
 }
 
 export async function POST(request: Request) {

@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Navbar } from '@/components/Navbar';
 import { useAuthStore } from '@/store/authStore';
-import { Edit, MapPin, Grid, Heart, MessageSquare, LogOut } from 'lucide-react';
+import { Edit, MapPin, Grid, Heart, MessageSquare, LogOut, Plus } from 'lucide-react';
 import { signOut } from '@/app/auth/actions';
 import { usePostStore } from '@/store/postStore';
 import { type Testimonio } from '@/data/testimonios';
@@ -65,7 +65,7 @@ export default function ProfilePage() {
 
                 <div className="flex items-center gap-2 mb-8 w-full justify-center">
                   <span className="px-3 py-1 bg-white/5 rounded-full text-xs font-medium text-gray-400 border border-white/5">
-                    {user.postsCount} Publicaciones
+                    {userPosts.length} Publicaciones
                   </span>
                 </div>
 
@@ -95,9 +95,18 @@ export default function ProfilePage() {
             transition={{ delay: 0.2 }}
             className="w-full lg:w-2/3"
           >
-            <div className="flex items-center gap-2 mb-6">
-              <Grid className="w-5 h-5 text-accent" />
-              <h2 className="text-xl font-bold">Mis Publicaciones</h2>
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-2">
+                <Grid className="w-5 h-5 text-accent" />
+                <h2 className="text-xl font-bold">Mis Publicaciones</h2>
+              </div>
+              <Link 
+                href="/posts/new"
+                className="flex items-center gap-2 px-4 py-2 bg-accent hover:bg-accent/80 text-white rounded-full text-sm font-medium transition-colors"
+              >
+                <Plus className="w-4 h-4" />
+                Crear publicación
+              </Link>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
